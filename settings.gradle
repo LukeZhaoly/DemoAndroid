@@ -1,16 +1,42 @@
 pluginManagement {
     repositories {
-        google()
         mavenCentral()
-        gradlePluginPortal()
+        maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
+        maven{ url 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        maven { url "https://jitpack.io" }
+        google()
     }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        google()
         mavenCentral()
+        maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
+        maven{ url 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        maven { url "https://jitpack.io" }
+        google()
     }
 }
+// 引入全局依赖
 rootProject.name = "DemoAndroid"
+// 模块初始化操作，用于引入需要的模块
+//def includeMap = [
+//        ":app" : new File("/app"),
+//        ":media" :  new File("media"),
+//        ":common" :  new File("common"),
+//        ":network" :  new File("network"),
+//        ":permission" :  new File("permission")
+//]
+//
+//includeMap.forEach {
+//    k,v -> {
+//        project(k).projectDir = v
+//        include k
+//    }
+//}
 include ':app'
+include ':media'
+include ':common'
+include ':network'
+include ':permission'
+include ':home'

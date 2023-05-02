@@ -1,4 +1,8 @@
-apply plugin:'com.android.application'
+if (rootProject.ext.isModuleHome){
+    apply plugin:'com.android.library'
+}else {
+    apply plugin:'com.android.application'
+}
 apply plugin:'org.jetbrains.kotlin.android'
 android {
     def android = this.rootProject.ext.app_android
@@ -12,17 +16,6 @@ android {
         testInstrumentationRunner android.testInstrumentationRunner
         consumerProguardFiles "consumer-rules.pro"
     }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
     flavorDimensions "demo"
     // 打包
     productFlavors {
@@ -30,6 +23,25 @@ android {
 
         }
     }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     sourceSets {
         demo {
             res.srcDirs = ['src/demo/java','src/demo/res']
@@ -39,12 +51,27 @@ android {
             res.srcDirs = ['src/main/java','src/main/res']
         }
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
 }
-
+def impl = rootProject.ext.app_impl
+def testImpl = rootProject.ext.app_testImpl
 dependencies {
-    implementation project(':common')
-    implementation project(':home')
+    api  impl.appcompat
+    api  impl.constraintlayout
+    api  impl.okhttp3
+    api  impl.glide
+    api  impl.ktx
+    api  impl.arouter
+    api  impl.glide_compiler
+    api  impl.retrofit
+    api  impl.retrofit_converter_gson
+    testApi testImpl.junit
+    androidTestApi testImpl.ext_unit
+    androidTestApi testImpl.espresso_core
 }
+
+
+
