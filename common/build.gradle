@@ -1,4 +1,4 @@
-if (rootProject.ext.isModuleHome){
+if (isModuleHome){
     apply plugin:'com.android.library'
 }else {
     apply plugin:'com.android.application'
@@ -6,22 +6,19 @@ if (rootProject.ext.isModuleHome){
 apply plugin:'org.jetbrains.kotlin.android'
 android {
     def android = this.rootProject.ext.app_android
-    namespace 'com.demo.home'
     compileSdk android.compileSdk
     defaultConfig {
+        if (!isModuleHome) {
+            applicationId android.app
+        }else {
+            print("isRelease_Scene = false")
+        }
         minSdk android.minSdk
         targetSdk android.targetSdk
         versionName android.versionName
         versionCode android.versionCode
         testInstrumentationRunner android.testInstrumentationRunner
         consumerProguardFiles "consumer-rules.pro"
-    }
-    flavorDimensions "demo"
-    // 打包
-    productFlavors {
-        demo {
-
-        }
     }
 
     buildTypes {
@@ -40,16 +37,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    sourceSets {
-        demo {
-            res.srcDirs = ['src/demo/java','src/demo/res']
-        }
-
-        main {
-            res.srcDirs = ['src/main/java','src/main/res']
-        }
     }
 
     kotlinOptions {

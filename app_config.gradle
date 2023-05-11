@@ -7,12 +7,13 @@ ext {
     isModuleMedia = true
     isModuleNet = true
     isModulePermission = true
-    isModuleHome = true
+    isModuleHome = false
 
     openLog = true
     isRelease = false
 
     app_android = [
+            appId                    : 'com.demo',
             compileSdk               : 33,
             buildToolsVersion        : "30.0.3",
             minSdk                   : 18,
@@ -41,8 +42,24 @@ ext {
             rxjava2                 : "io.reactivex.rxjava2:rxjava:2.2.21",
             arouter                 : "com.alibaba:arouter-api:1.5.1",
             arouter_compiler        : "com.alibaba:arouter-compiler:1.5.1",
-            ktx                     : 'androidx.core:core-ktx:1.8.0'
-
+            ktx                     : 'androidx.core:core-ktx:1.8.0',
+            lifecycleRuntime        : "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1",
+            viewModelKtx            : "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1",
+            livedataKtx             : "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1",
+            activityKtx             : "androidx.activity:activity-ktx:1.2.4",
+            fragmentKtx             : "androidx.fragment:fragment-ktx:1.2.4",
+            viewpager2              : "androidx.viewpager2:viewpager2:1.0.0",
+            logger                  : "com.orhanobut:logger:2.2.0",
+            gson                    : "com.google.code.gson:gson:2.9.1",
+            groupie                 : "com.github.lisawray.groupie:groupie:2.10.1",
+            gropuieBinding          : "com.github.lisawray.groupie:groupie-viewbinding:2.10.1",
+            viewModel_ktx           : "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1",
+            room                    : "androidx.room:room-runtime:2.3.0",
+            room_ktx                : "androidx.room:room-ktx:2.3.0",
+            room_compiler           : "androidx.room:room-compiler:2.3.0",
+            work_manager            : "androidx.work:work-runtime-ktx:2.6.0",
+            exoplayer               : "com.google.android.exoplayer:exoplayer:2.16.0",
+            lottie                  : "com.airbnb.android:lottie:4.2.0"
     ]
 
 }

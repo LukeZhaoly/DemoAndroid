@@ -1,4 +1,4 @@
-if (rootProject.ext.isModuleHome){
+if (isModuleHome){
     apply plugin:'com.android.library'
 }else {
     apply plugin:'com.android.application'
@@ -6,9 +6,13 @@ if (rootProject.ext.isModuleHome){
 apply plugin:'org.jetbrains.kotlin.android'
 android {
     def android = this.rootProject.ext.app_android
-    namespace 'com.demo.home'
     compileSdk android.compileSdk
     defaultConfig {
+        if (!isModuleHome) {
+            applicationId android.app
+        }else {
+            print("isRelease_Scene = false")
+        }
         minSdk android.minSdk
         targetSdk android.targetSdk
         versionName android.versionName
@@ -16,29 +20,11 @@ android {
         testInstrumentationRunner android.testInstrumentationRunner
         consumerProguardFiles "consumer-rules.pro"
     }
-    flavorDimensions "demo"
-    // 打包
-    productFlavors {
-        demo {
-
-        }
-    }
-
-    sourceSets {
-        demo {
-            res.srcDirs = ['src/demo/java','src/demo/res']
-        }
-
-        main {
-            res.srcDirs = ['src/main/java','src/main/res']
-        }
-    }
 
     buildTypes {
         debug {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig null
         }
 
         release {
@@ -49,25 +35,29 @@ android {
         }
     }
 
-//    android.applicationVariants.all { variant ->
-//        variant.outputs.all {
-//            if (rootProject.ext.isModuleHome){
-//                outputFileName = "${rootProject.name}_${variant.productFlavors[0].name}_${defaultConfig.versionName}.aar"
-//            }else {
-//                outputFileName = "${rootProject.name}_${variant.productFlavors[0].name}_${defaultConfig.versionName}.apk"
-//            }
-//        }
-//    }
+    flavorDimensions "default"
+    // 打包
+    productFlavors {
+        demo {
+
+        }
+    }
+    sourceSets {
+        demo {
+            res.srcDirs = ['src/demo/res']
+            java.srcDirs = ['src/demo/java']
+        }
+        main {
+            res.srcDirs = ['src/main/res']
+            java.srcDirs = ['src/main/java']
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    sourceSets {
-        demo {
-            res.srcDirs = ['src/demo/java','src/demo/res']
-        }
-    }
 
     kotlinOptions {
         jvmTarget = '1.8'

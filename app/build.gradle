@@ -2,9 +2,9 @@ apply plugin:'com.android.application'
 apply plugin:'org.jetbrains.kotlin.android'
 android {
     def android = this.rootProject.ext.app_android
-    namespace 'com.demo.home'
     compileSdk android.compileSdk
     defaultConfig {
+        applicationId android.appId
         minSdk android.minSdk
         targetSdk android.targetSdk
         versionName android.versionName
@@ -14,6 +14,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -23,7 +27,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    flavorDimensions "demo"
+    flavorDimensions "default"
     // 打包
     productFlavors {
         demo {
@@ -32,13 +36,20 @@ android {
     }
     sourceSets {
         demo {
-            res.srcDirs = ['src/demo/java','src/demo/res']
+            res.srcDirs = ['src/demo/res']
+            java.srcDirs = ['src/demo/java']
         }
-
         main {
-            res.srcDirs = ['src/main/java','src/main/res']
+            res.srcDirs = ['src/main/res']
+            java.srcDirs = ['src/main/java']
         }
     }
+
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }

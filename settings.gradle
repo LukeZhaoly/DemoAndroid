@@ -1,22 +1,3 @@
-pluginManagement {
-    repositories {
-        mavenCentral()
-        maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
-        maven{ url 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
-        maven { url "https://jitpack.io" }
-        google()
-    }
-}
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        mavenCentral()
-        maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
-        maven{ url 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
-        maven { url "https://jitpack.io" }
-        google()
-    }
-}
 // 引入全局依赖
 rootProject.name = "DemoAndroid"
 // 模块初始化操作，用于引入需要的模块

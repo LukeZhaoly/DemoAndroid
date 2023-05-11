@@ -6,9 +6,13 @@ if (rootProject.ext.isModuleHome){
 apply plugin:'org.jetbrains.kotlin.android'
 android {
     def android = this.rootProject.ext.app_android
-    namespace 'com.demo.home'
     compileSdk android.compileSdk
     defaultConfig {
+        if (!isModuleMedia) {
+            applicationId android.app
+        }else {
+            print("isRelease_Scene = false")
+        }
         minSdk android.minSdk
         targetSdk android.targetSdk
         versionName android.versionName
@@ -17,22 +21,6 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
-    flavorDimensions "demo"
-    // 打包
-    productFlavors {
-        demo {
-
-        }
-    }
-    sourceSets {
-        demo {
-            res.srcDirs = ['src/demo/java','src/demo/res']
-        }
-
-        main {
-            res.srcDirs = ['src/main/java','src/main/res']
-        }
-    }
 
     buildTypes {
         release {
