@@ -16,7 +16,6 @@
             <option value="$PROJECT_DIR$/home" />
             <option value="$PROJECT_DIR$/media" />
             <option value="$PROJECT_DIR$/network" />
-            <option value="$PROJECT_DIR$/permission" />
           </set>
         </option>
       </GradleProjectSettings>

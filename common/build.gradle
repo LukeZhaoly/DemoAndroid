@@ -1,63 +1,106 @@
-if (isModuleHome){
-    apply plugin:'com.android.library'
-}else {
-    apply plugin:'com.android.application'
+if (!isModuleCommon) {
+    apply plugin: 'com.android.library'
+} else {
+    apply plugin: 'com.android.application'
 }
-apply plugin:'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.kotlin.android'
 android {
-    def android = this.rootProject.ext.app_android
-    compileSdk android.compileSdk
+    compileSdk app_android.compileSdk
     defaultConfig {
-        if (!isModuleHome) {
-            applicationId android.app
-        }else {
+        if (isModuleCommon) {
+            applicationId common_app
+        } else {
             print("isRelease_Scene = false")
         }
-        minSdk android.minSdk
-        targetSdk android.targetSdk
-        versionName android.versionName
-        versionCode android.versionCode
-        testInstrumentationRunner android.testInstrumentationRunner
+        minSdk app_android.minSdk
+        targetSdk app_android.targetSdk
+        versionName app_android.versionName
+        versionCode app_android.versionCode
+        testInstrumentationRunner app_android.testInstrumentationRunner
         consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
-        debug {
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-
         release {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "flavors"
+
+    productFlavors {
+        demo {
+
+        }
+    }
+
+    sourceSets {
+        main{
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            res.srcDirs = ['src/main/res']
+        }
+
+        demo {
+            if (isModuleCommon){
+                manifest.srcFile 'src/demo/debug/AndroidManifest.xml'
+            }else {
+                manifest.srcFile 'src/demo/AndroidManifest.xml'
+            }
+            java.srcDirs = ['src/demo/java']
+            res.srcDirs = ['src/demo/res']
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.1.0-rc01" // 单独设置 Compose Compiler 版本
     }
 
     kotlinOptions {
         jvmTarget = '1.8'
     }
 }
-def impl = rootProject.ext.app_impl
-def testImpl = rootProject.ext.app_testImpl
 dependencies {
-    api  impl.appcompat
-    api  impl.constraintlayout
-    api  impl.okhttp3
-    api  impl.glide
-    api  impl.ktx
-    api  impl.arouter
-    api  impl.glide_compiler
-    api  impl.retrofit
-    api  impl.retrofit_converter_gson
-    testApi testImpl.junit
-    androidTestApi testImpl.ext_unit
-    androidTestApi testImpl.espresso_core
+    implementation project(':network')
+    implementation project(':media')
+    api app_impl.appcompat
+    api app_impl.constraintlayout
+    api app_impl.glide
+    api app_impl.ktx
+//    api impl.arouter
+//    api impl.glide_compiler
+//    api impl.retrofit
+//    api impl.retrofit_converter_gson
+//    api impl.lifecycleRuntime
+//    api impl.viewModelKtx
+//    api impl.livedataKtx
+//    api impl.activityKtx
+//    api impl.fragmentKtx
+//    api impl.viewpager2
+//    api impl.room
+//    api impl.room_ktx
+//    kapt impl.room_compiler
+//    api impl.work_manager
+//    api impl.hilt
+//    kapt impl.hilt_compiler
+    api app_impl.compose_ui
+    api app_impl.compose_material
+    api app_impl.compose_tool
+    api app_impl.compose_activity
+    testApi app_testImpl.junit
+    androidTestApi app_testImpl.ext_unit
+    androidTestApi app_testImpl.espresso_core
 }
 
 

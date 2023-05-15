@@ -3,11 +3,13 @@
     package="com.luke.home">
 
     <application>
-        <activity android:name="home.activity.MainActivity"
+        <activity
+            android:name="home.activity.MainActivity"
+            android:theme="@style/CommonTheme"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
