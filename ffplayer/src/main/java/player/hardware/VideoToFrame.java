@@ -42,6 +42,12 @@ public class VideoToFrame implements Runnable{
         void onFinishDecode();
 
         void onDecodeFrame(int index);
+
+        void onDecodeFrameTime(long time);
+
+        void onFrameToJpg(long time);
+
+        void onStartDecode(long time);
     }
 
     public void setCallback(Callback callback) {
@@ -85,14 +91,14 @@ public class VideoToFrame implements Runnable{
             throwable = t;
         }
     }
-
+    long startTime = 0;
     public void videoDecode(String videoFilePath) throws IOException {
+        startTime = System.currentTimeMillis();
         MediaExtractor extractor = null;
         MediaCodec decoder = null;
         try {
-            File videoFile = new File(videoFilePath);
             extractor = new MediaExtractor();
-            extractor.setDataSource(videoFile.toString());
+            extractor.setDataSource(videoFilePath);
             int trackIndex = selectTrack(extractor);
             if (trackIndex < 0) {
                 throw new RuntimeException("No video track found in " + videoFilePath);
@@ -149,7 +155,11 @@ public class VideoToFrame implements Runnable{
         final int width = mediaFormat.getInteger(MediaFormat.KEY_WIDTH);
         final int height = mediaFormat.getInteger(MediaFormat.KEY_HEIGHT);
         int outputFrameCount = 0;
+        if (callback != null){
+            callback.onStartDecode(System.currentTimeMillis() - startTime);
+        }
         while (!sawOutputEOS && !stopDecode) {
+            long star = System.currentTimeMillis();
             if (!sawInputEOS) {
                 int inputBufferId = decoder.dequeueInputBuffer(DEFAULT_TIMEOUT_US);
                 if (inputBufferId >= 0) {
@@ -189,8 +199,12 @@ public class VideoToFrame implements Runnable{
                             e.printStackTrace();
                         }
                     }
+                    if (callback != null) {
+                        callback.onDecodeFrameTime(System.currentTimeMillis() - star);
+                    }
 
                     if (outputImageFormat != null) {
+                        long outStart = System.currentTimeMillis();
                         String fileName;
                         switch (outputImageFormat) {
                             case I420:
@@ -205,6 +219,9 @@ public class VideoToFrame implements Runnable{
                                 fileName = OUTPUT_DIR + String.format("frame_%05d.jpg", outputFrameCount);
                                 compressToJpeg(fileName, image);
                                 break;
+                        }
+                        if (callback != null){
+                            callback.onFrameToJpg(System.currentTimeMillis() - outStart);
                         }
                     }
                     image.close();
